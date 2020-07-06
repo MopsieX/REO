@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="~/css/bootstrap/bootstrap.css" rel="stylesheet" />
+    <style>
+        body {
+            width: 100vw;
+            height: 100vh;
+            margin: 0px;
+        }
+
+        webview {
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+    <script>
+        const { shell, ipcRenderer, session } = require('electron');
+        const path = require('path');
+
+        var isWindows = '@REO.OperatingSystem.IsWindows()' === '@true';
+        var chatMessageMethod = '@Settings.GetSetting("ChatMessageMethod")';
+        openExternal = function (url) {
+            shell.openExternal(url)
+        };
+        setInterval(function () { ipcRenderer.send('Ping', "ping"); }, 5000);
+    </script>
+    <script src="https://wzrd.in/standalone/copy-to-clipboard@latest"></script>
+    <script src="~/js/bundle.js"></script>
+</head>
+<body>
+    <div style="width:100%; height:100%">
+        @RenderBody()
+    </div>
+    
+
+</body>
+</html>

@@ -1,0 +1,11 @@
+body, html, header {
+    background-color: #121212 !important;
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+.sendMessage, .popover, .popover-content, .popover-title {
+    background-color: rgba(18, 18, 18, 0.8) !important;
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+header {
+    background-image: none !important;
+}

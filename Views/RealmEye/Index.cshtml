@@ -1,0 +1,60 @@
+﻿@{
+    ViewData["Title"] = "RealmEye";
+}
+<title>RealmEye</title>
+<script>
+        var webview = null;
+        function loadCSS(cssFile) {
+            var myPath = "css/realmeye/" + cssFile;
+            $.when($.get(myPath))
+                .done(function (data) {
+
+                    webview.insertCSS(data);
+                });
+        }
+        function ExecuteJavascript(jsFile) {
+            var myPath = "js/realmeye/" + jsFile;
+            $.when($.get(myPath))
+                .done(function (data) {
+                    data = "var chatMessageMethod = '" + chatMessageMethod + `';
+                    ` + data;
+                    console.log(data);
+                    webview.executeJavaScript(data);
+                });
+        }
+        window.onload = function () {
+            webview = document.querySelector('webview')
+
+
+            webview.addEventListener("dom-ready", event => {
+                /* Caret doesn't show after navigation. Temp fix taken from https://github.com/electron/electron/issues/14474#issuecomment-523959679 */
+                // Remove blur() and focus() once https://github.com/electron/electron/issues/14474 is fixed
+                webview.blur();
+                webview.focus();
+                var lastStyle = "@Settings.GetSetting("RealmEyeStyle")";
+            if (lastStyle !== "default" && lastStyle !== "")
+            loadCSS(lastStyle);
+                var currentUrl = webview.getURL();
+                if (currentUrl.includes("offers-to")) {
+                    ExecuteJavascript('Offers.js');
+                } else if (currentUrl.includes("edit-offers-by")) {
+                    //callSpec({"type":"POST","url":"\/save-player-offers-service","data":{"player":"IrMonOxide","trades":null}},{"trades":"[{\"quantity\":1,\"sellingItems\":[3132],\"sellingQuantities\":[1],\"buyingItems\":[9065],\"buyingQuantities\":[1],\"suspended\":false}]"})
+                    webview.executeJavaScript(`
+                        window.setInterval(function () {
+                            $(".btn.btn-primary.trade-save").click()
+                        }, 60000);
+                        `);
+                }
+            });
+            webview.addEventListener("ipc-message", (event) => {
+                const { args, channel } = event;
+                if (channel == "sendInGameMessage") {
+                    ipcRenderer.send('SendInGameMessage', { username: args[0], message: args[1]});
+                    return;
+                }
+            });
+        };
+
+
+</script>
+    <webview src="https://www.realmeye.com/" autosize="off" style="min-width: 100%; min-height: 100%;" preload="file:@Html.Raw(System.IO.Path.Combine(Startup.projectRootFolder,"wwwroot","js","realmeye","RealmEyePreLoad.js"))"></webview>

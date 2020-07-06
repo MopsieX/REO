@@ -1,0 +1,110 @@
+﻿@using System.IO;
+
+@{
+    ViewData["Title"] = "Settings";
+}
+
+<title>Settings</title>
+<script src="~/js/settings.js"></script>
+<script>
+        Settings.Init();
+    Settings.LoadStyle('@Settings.GetSetting("SettingsStyle")');
+</script>
+<h1>Settings</h1>
+<div>
+    <div class="form-group" style="max-width:420px">
+        <div class="form-row">
+            <div class="col">
+                <label>Hotkey to toggle the overlay. Keys can be copied from <a href="#" onclick="openExternal('https://www.electronjs.org/docs/api/accelerator')">here</a></label>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col">
+                <input type="text" class="form-control" id="toggleOverlay" name="toggleOverlay" value="@(Settings.GetSetting("ToggleOverlay"))" />
+            </div>
+            <div class="col-auto">
+                <button onclick="ipcRenderer.send('SetToggleOverlay', $('#toggleOverlay').val());">Save</button>
+            </div>
+        </div>
+    </div>
+    <div class="form-group" style="max-width:420px">
+        <div class="form-row">
+            <div class="col">
+                <label>Hotkey to reset RealmEye Password. Uses the Chat Message Method below.</label>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col">
+                <input type="text" class="form-control" id="resetPassword" name="resetPassword" value="@(Settings.GetSetting("ResetPassword"))" />
+            </div>
+            <div class="col-auto">
+                <button onclick="ipcRenderer.send('SetResetPassword', $('#resetPassword').val());">Save</button>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="realmeyestyle">RealmEye Styles Sheet</label>
+        <select id="realmeyestyle" name="realmeyestyle" onchange="ipcRenderer.send('SetRealmEyeStyle', $('#realmeyestyle').val());">
+            @{
+                <option value="default">Default</option>
+                var cssFiles = Directory.GetFiles(System.IO.Path.Combine(Startup.projectRootFolder, "wwwroot", "css", "realmeye"), "*.css");
+                foreach (var tmpCss in cssFiles)
+                {
+                    string fileName = System.IO.Path.GetFileName(tmpCss);
+                    if (fileName.Equals(Settings.GetSetting("RealmEyeStyle")))
+                    {
+                        <option class="form-control" value="@Html.Raw(fileName)" selected>@Html.Raw(fileName)</option>
+                    }
+                    else
+                    {
+                        <option class="form-control" value="@Html.Raw(fileName)">@Html.Raw(fileName)</option>
+                    }
+                }
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="settingsstylessheet">Settings Styles Sheet</label>
+        <select id="settingsstylessheet" name="settingsstylessheet" onchange="Settings.ApplyStyle($('#settingsstylessheet').val())">
+            @{
+
+                <option value="default">Default</option>
+                cssFiles = Directory.GetFiles(System.IO.Path.Combine(Startup.projectRootFolder, "wwwroot", "css", "settings"), "*.css");
+                foreach (var tmpCss in cssFiles)
+                {
+                    string fileName = System.IO.Path.GetFileName(tmpCss);
+                    if (fileName.Equals(Settings.GetSetting("SettingsStyle")))
+                    {
+                        <option class="form-control" value="@Html.Raw(fileName)" selected>@Html.Raw(fileName)</option>
+                    }
+                    else
+                    {
+                        <option class="form-control" value="@Html.Raw(fileName)">@Html.Raw(fileName)</option>
+                    }
+                }
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        @{ if (!REO.OperatingSystem.IsWindows())
+            {
+                <label>PostMessage is Windows only. Mac uses the Copy to Clipboard</label><br>
+                <input type="radio" id="PostMessage" name="chatmessagesendmethod" value="PostMessage" onclick="return false;">
+                <label for="PostMessage">PostMessage</label><br>
+                <label>Minimizes the overlay and maximizes Exalt and uses PostMessage to type "/tell {username}" in game</label><br>
+                <input type="radio" id="CopyToClipboard" name="chatmessagesendmethod" value="CopyToClipboard" checked>
+                <label for="CopyToClipboard">Copy to Clipboard</label><br>
+                <label>Copies "/tell {username}" to the clipboard</label>
+            }
+            else
+            {
+                <input type="radio" id="PostMessage" name="chatmessagesendmethod" value="PostMessage" onclick="Settings.SetChatMessageMethod()" @Html.Raw((Settings.GetSetting("ChatMessageMethod") == "PostMessage") ? "checked" : "")>
+                <label for="PostMessage">PostMessage</label><br>
+                <label>Minimizes the overlay and maximizes Exalt and uses PostMessage to type "/tell {username}" in game</label><br>
+                <input type="radio" id="CopyToClipboard" name="chatmessagesendmethod" value="CopyToClipboard" onclick="Settings.SetChatMessageMethod()" @Html.Raw((Settings.GetSetting("ChatMessageMethod") == "CopyToClipboard") ? "checked" : "")>
+                <label for="CopyToClipboard">Copy to Clipboard</label><br>
+                <label>Copies "/tell {username}" to the clipboard</label>
+            }
+        }
+    </div>
+</div>
