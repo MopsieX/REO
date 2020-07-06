@@ -38,8 +38,7 @@
                 if (currentUrl.includes("offers-to")) {
                     ExecuteJavascript('Offers.js');
                 } else if (currentUrl.includes("edit-offers-by")) {
-                    //callSpec({"type":"POST","url":"\/save-player-offers-service","data":{"player":"IrMonOxide","trades":null}},{"trades":"[{\"quantity\":1,\"sellingItems\":[3132],\"sellingQuantities\":[1],\"buyingItems\":[9065],\"buyingQuantities\":[1],\"suspended\":false}]"})
-                    webview.executeJavaScript(`
+                   webview.executeJavaScript(`
                         window.setInterval(function () {
                             $(".btn.btn-primary.trade-save").click()
                         }, 60000);
