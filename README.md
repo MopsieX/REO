@@ -1,7 +1,7 @@
 ﻿# RealmEye Overlay
 
 This is an early version. There may be bugs that I haven't encountered. Please report all bugs here.  
-You need the ASP.NET Core Runtime by Microsoft to install and run the app. You can download it [here](https://dotnet.microsoft.com/download/dotnet-core/3.1) 
+You need the ASP.NET Core 3.1 Runtime by Microsoft to install and run the app. You can download it [here](https://dotnet.microsoft.com/download/dotnet-core/3.1) 
 
 
 ### Features:
