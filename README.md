@@ -1,7 +1,7 @@
 ﻿# RealmEye Overlay
 
-This is an early version. There may be bugs that I haven't encountered. Please report all bugs here.
-
+This is an early version. There may be bugs that I haven't encountered. Please report all bugs here.  
+You need the ASP.NET Core Runtime by Microsoft to install and run the app. You can download it [here](https://dotnet.microsoft.com/download/dotnet-core/3.1) 
 
 
 ### Features:
@@ -13,9 +13,10 @@ This is an early version. There may be bugs that I haven't encountered. Please r
 
 
 ### How to build:
-Download the source code and extract it somewhere
-Install Node.JS
-If you're on Windows run the file "Setup-win.bat"
-If you're on Mac run the file "Setup-Mac.sh"
-The script should install the required 3rd party libraries.
-Once it finishes installing the libraries you should be able to open the project in Visual Studio and build it.
+Download the source code and extract it somewhere  
+Install Node.JS  
+Install ASP.Net Core 3.1  
+If you're on Windows run the file "Setup-win.bat"  
+If you're on Mac run the file "Setup-Mac.sh"  
+The script should install the required 3rd party libraries.  
+Once it finishes installing the libraries you should be able to open the project in Visual Studio and build it.  
